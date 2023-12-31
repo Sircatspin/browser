@@ -3,77 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Browser Setup</title>
+    <title>Calculator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #f4f4f4;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            margin: 0;
         }
-        form {
+
+        #calculator {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
             text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        label {
-            font-size: 18px;
-            margin-bottom: 10px;
-            display: block;
-        }
-        select {
-            font-size: 16px;
-            padding: 5px;
+
+        input[type="text"] {
             width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+            font-size: 18px;
         }
-        button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            font-size: 16px;
+
+        input[type="button"] {
+            width: 48px;
+            height: 48px;
+            margin: 5px;
+            font-size: 18px;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <form onsubmit="return setup()">
-        <label for="searchEngine">Select your preferred search engine:</label>
-        <select id="searchEngine">
-            <option value="google">Google</option>
-            <option value="duckduckgo">DuckDuckGo</option>
-        </select>
-        <button type="submit">Save and Continue</button>
-    </form>
+    <div id="calculator">
+        <input type="text" id="display" disabled>
+        <br>
+        <input type="button" value="7" onclick="appendCharacter('7')">
+        <input type="button" value="8" onclick="appendCharacter('8')">
+        <input type="button" value="9" onclick="appendCharacter('9')">
+        <input type="button" value="/" onclick="appendCharacter('/')">
+        <br>
+        <input type="button" value="4" onclick="appendCharacter('4')">
+        <input type="button" value="5" onclick="appendCharacter('5')">
+        <input type="button" value="6" onclick="appendCharacter('6')">
+        <input type="button" value="*" onclick="appendCharacter('*')">
+        <br>
+        <input type="button" value="1" onclick="appendCharacter('1')">
+        <input type="button" value="2" onclick="appendCharacter('2')">
+        <input type="button" value="3" onclick="appendCharacter('3')">
+        <input type="button" value="-" onclick="appendCharacter('-')">
+        <br>
+        <input type="button" value="0" onclick="appendCharacter('0')">
+        <input type="button" value="." onclick="appendCharacter('.')">
+        <input type="button" value="=" onclick="calculate()">
+        <input type="button" value="+" onclick="appendCharacter('+')">
+        <br>
+        <input type="button" value="C" onclick="clearDisplay()">
+    </div>
 
     <script>
-        // Function to set a cookie with a specified name, value, and expiration date
-        function setCookie(name, value, days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + value + expires + "; path=/";
+        function appendCharacter(character) {
+            document.getElementById('display').value += character;
         }
 
-        // Function to handle the setup form submission
-        function setup() {
-            var selectedEngine = document.getElementById('searchEngine').value;
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
 
-            // Set the selected search engine in a cookie with a 30-day expiration
-            setCookie('searchEngine', selectedEngine, 30);
-
-            // Redirect to the main browser page
-            window.location.href = 'browser.html';
-
-            return false; // Prevent the form from actually submitting
+        function calculate() {
+            try {
+                document.getElementById('display').value = eval(document.getElementById('display').value);
+            } catch (error) {
+                document.getElementById('display').value = 'Error';
+            }
         }
     </script>
 </body>
