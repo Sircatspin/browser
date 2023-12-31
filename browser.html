@@ -56,18 +56,36 @@
             var searchQuery = document.getElementById('searchInput').value;
             var selectedEngine = getCookie('searchEngine');
             var iframe = document.getElementById('browserFrame');
+            
+            var userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0';
 
             if (selectedEngine === 'google') {
                 iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(searchQuery);
             } else if (selectedEngine === 'duckduckgo') {
                 iframe.src = 'https://duckduckgo.com/?q=' + encodeURIComponent(searchQuery);
             } else {
-                // Default to Google if no preference is found
                 iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(searchQuery);
             }
 
+            // Set the custom User-Agent header
+            iframe.contentWindow.postMessage({ type: 'setUserAgent', data: userAgent }, '*');
+
             return false; // Prevent the form from actually submitting
         }
+    </script>
+
+    <!-- Add this script in the head of your Google and DuckDuckGo pages -->
+    <script>
+        window.addEventListener('message', function (event) {
+            if (event.data && event.data.type === 'setUserAgent') {
+                var userAgent = event.data.data;
+                if (userAgent) {
+                    navigator.__defineGetter__('userAgent', function () {
+                        return userAgent;
+                    });
+                }
+            }
+        });
     </script>
 </body>
 </html>
