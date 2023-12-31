@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Web Browser</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 90vh; /* Adjust the height as needed */
+            border: none;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="return search()">
+        <input type="text" id="searchInput" placeholder="Enter search query">
+        <button type="submit">Search</button>
+    </form>
+    <iframe id="browserFrame"></iframe>
+
+    <script>
+        // Function to get the value of a cookie with a specified name
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Function to handle the search form submission
+        function search() {
+            var searchQuery = document.getElementById('searchInput').value;
+            var selectedEngine = getCookie('searchEngine');
+            var iframe = document.getElementById('browserFrame');
+
+            if (selectedEngine === 'google') {
+                iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(searchQuery);
+            } else if (selectedEngine === 'duckduckgo') {
+                iframe.src = 'https://duckduckgo.com/?q=' + encodeURIComponent(searchQuery);
+            } else {
+                // Default to Google if no preference is found
+                iframe.src = 'https://www.google.com/search?q=' + encodeURIComponent(searchQuery);
+            }
+
+            return false; // Prevent the form from actually submitting
+        }
+    </script>
+</body>
+</html>
