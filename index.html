@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Browser Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        form {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        select {
+            font-size: 16px;
+            padding: 5px;
+            width: 100%;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="return setup()">
+        <label for="searchEngine">Select your preferred search engine:</label>
+        <select id="searchEngine">
+            <option value="google">Google</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+        </select>
+        <button type="submit">Save and Continue</button>
+    </form>
+
+    <script>
+        // Function to set a cookie with a specified name, value, and expiration date
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        // Function to handle the setup form submission
+        function setup() {
+            var selectedEngine = document.getElementById('searchEngine').value;
+
+            // Set the selected search engine in a cookie with a 30-day expiration
+            setCookie('searchEngine', selectedEngine, 30);
+
+            // Redirect to the main browser page
+            window.location.href = 'browser.html';
+
+            return false; // Prevent the form from actually submitting
+        }
+    </script>
+</body>
+</html>
